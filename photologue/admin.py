@@ -3,13 +3,15 @@ from django import forms
 from django.conf import settings
 
 from .models import Gallery, Photo, GalleryUpload, PhotoEffect, PhotoSize, \
-    Watermark
+    Watermark, GalleryInfo
 
 USE_CKEDITOR = getattr(settings, 'PHOTOLOGUE_USE_CKEDITOR', False)
 
 if USE_CKEDITOR:
     from ckeditor.widgets import CKEditorWidget
 
+class GalleryInfoInline(admin.TabularInline):
+    model = GalleryInfo
 
 class GalleryAdminForm(forms.ModelForm):
     if USE_CKEDITOR:
@@ -20,11 +22,12 @@ class GalleryAdminForm(forms.ModelForm):
 
 
 class GalleryAdmin(admin.ModelAdmin):
+    inlines = (GalleryInfoInline, )
     list_display = ('title', 'date_added', 'photo_count', 'is_public')
     list_filter = ['date_added', 'is_public']
     date_hierarchy = 'date_added'
     prepopulated_fields = {'title_slug': ('title',)}
-    filter_horizontal = ('photos',)
+    #filter_horizontal = ('photos',)
     form = GalleryAdminForm
 
 

@@ -161,6 +161,7 @@ class Gallery(models.Model):
     photos = models.ManyToManyField('Photo',
                                     related_name='galleries',
                                     verbose_name=_('photos'),
+                                    #through='GalleryInfo',
                                     null=True,
                                     blank=True)
     tags = TagField(help_text=tagfield_help_text, verbose_name=_('tags'))
@@ -211,6 +212,15 @@ class Gallery(models.Model):
     def public(self):
         """Return a queryset of all the public photos in this gallery."""
         return self.photos.filter(is_public=True)
+
+
+class GalleryInfo(models.Model):
+    gallery = models.ForeignKey('Gallery')
+    photo = models.ForeignKey('Photo')
+    number = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ('number',)
 
 
 class GalleryUpload(models.Model):
