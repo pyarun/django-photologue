@@ -161,7 +161,7 @@ class Gallery(models.Model):
     photos = models.ManyToManyField('Photo',
                                     related_name='galleries',
                                     verbose_name=_('photos'),
-                                    #through='GalleryInfo',
+                                    through='GalleryInfo',
                                     null=True,
                                     blank=True)
     tags = TagField(help_text=tagfield_help_text, verbose_name=_('tags'))
