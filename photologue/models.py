@@ -213,10 +213,15 @@ class Gallery(models.Model):
         """Return a queryset of all the public photos in this gallery."""
         return self.photos.filter(is_public=True)
 
+    def get_photos(self):
+        """Return a queryset """
+        return self.photos.order_by("link_to_photo")
+
+
 
 class GalleryInfo(models.Model):
     gallery = models.ForeignKey('Gallery')
-    photo = models.ForeignKey('Photo')
+    photo = models.ForeignKey('Photo', related_name="link_to_photo")
     number = models.PositiveIntegerField()
 
     class Meta:
