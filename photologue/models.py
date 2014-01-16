@@ -227,6 +227,8 @@ class GalleryInfo(models.Model):
     class Meta:
         ordering = ('number',)
 
+    def __unicode__(self):
+        return unicode(self.photo)
 
 class GalleryUpload(models.Model):
     zip_file = models.FileField(_('images file (.zip)'),

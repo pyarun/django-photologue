@@ -1,0 +1,77 @@
+{% load admin_static %}
+
+<div class="selector">
+    <div class="selector-available">
+        <h2>Available {{verbose_name}}</h2>
+        <p class="selector-filter">
+            <label for="id_{{name}}_input" style="width: 16px; padding:
+2px;">
+                <img src="{% static 'admin/img/selector-search.gif' %}" alt="Filter">
+            </label>
+            <input type="text" id="id_{{name}}_input" />
+        </p>
+        <select id="id_{{name}}_from" name="" multiple="multiple">
+            {% for element in left %}
+                <option value="{{element.id}}">{{element}}</option>
+            {%endfor%}
+        </select>
+        <a class="selector-chooseall" href="javascript: (function(){
+SelectBox.move_all('id_{{name}}_from', 'id_{{name}}_to'); })()">Choose
+all</a>
+    </div>
+    <ul class="selector-chooser">
+        <li>
+            <a href="javascript: (function(){
+SelectBox.move('id_{{name}}_from','id_{{name}}_to');})()"
+class="selector-add">Add</a>
+        </li>
+        <li>
+            <a href="javascript: (function(){
+SelectBox.move('id_{{name}}_to','id_{{name}}_from');})()"
+class="selector-remove">Remove</a>
+        </li>
+    </ul>
+    <div class="selector-chosen">
+        <h2>Chosen {{verbose_name}}</h2>
+        <p class="selector-filter">
+            Select your choice(s) and click <img src="{% static 'admin/img/selector-add.gif' %}" alt="Add">
+        </p>
+        <select id="id_{{name}}_to" multiple="multiple" size="0"
+name="{{name}}" class="filtered">
+            {% for element in right %}
+                <option value="{{element.id}}">{{element}}</option>
+            {%endfor%}
+        </select>
+        <a href="javascript: (function() {
+SelectBox.move_all('id_{{name}}_to', 'id_{{name}}_from');})()"
+class="selector-clearall">Clear all</a>
+    </div>
+</div>
+<!--<div style="clear: both"></div>-->
+
+<script type="text/javascript">
+function findForm(node) {
+    // returns the node of the form containing the given node
+    if (node.tagName.toLowerCase() != 'form') {
+        return findForm(node.parentNode);
+    }
+    return node;
+}
+
+addEvent(document.getElementById('id_{{name}}_input'), 'keyup', function(e)
+{ SelectFilter.filter_key_up(e, 'id_{{name}}'); });
+addEvent(document.getElementById('id_{{name}}_input'), 'keydown',
+function(e) { SelectFilter.filter_key_down(e, 'id_{{name}}'); });
+addEvent(document.getElementById('id_{{name}}_from'), 'dblclick',
+function() { SelectBox.move('id_{{name}}' + '_from', 'id_{{name}}' +
+'_to'); });
+addEvent(document.getElementById('id_{{name}}_to'), 'dblclick', function()
+{ SelectBox.move('id_{{name}}' + '_to', 'id_{{name}}' + '_from'); });
+addEvent(findForm(document.getElementById('id_{{name}}_from')), 'submit',
+function() { SelectBox.select_all('id_{{name}}' + '_to'); });
+SelectBox.init('id_{{name}}' + '_from');
+SelectBox.init('id_{{name}}' + '_to');
+// Move selected from_box options to to_box
+SelectBox.move('id_{{name}}' + '_from', 'id_{{name}}' + '_to');
+
+</script>
