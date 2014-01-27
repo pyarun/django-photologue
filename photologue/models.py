@@ -318,7 +318,11 @@ class GalleryUpload(models.Model):
                                           is_public=self.is_public,
                                           tags=self.tags)
                             photo.image.save(six.text_type(filename, "cp437"), ContentFile(data))
-                            gallery.photos.add(photo)
+                            gallery_info = GalleryInfo()
+                            gallery_info.gallery = gallery
+                            gallery_info.photo = photo 
+                            gallery_info.number = count
+                            gallery_info.save()
                             count = count + 1
                             break
                         count = count + 1
